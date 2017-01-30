@@ -22,9 +22,9 @@ function Blob(name, x, y, r, red, green, blue) {
     }
 
     this.eats = function(other) {
-            if(other.pos == undefined){
-                other.pos=createVector(other.x,other.y);
-            }
+
+            other.pos=createVector(other.pos.x,other.pos.y);
+
             if (this.r > other.r*1.3) {
 
                 var d = p5.Vector.dist(this.pos, other.pos);
@@ -42,9 +42,9 @@ function Blob(name, x, y, r, red, green, blue) {
     }
 
     this.dead=function (other) {
-        if(other.pos == undefined){
-            other.pos=createVector(other.x,other.y);
-        }
+
+        other.pos=createVector(other.pos.x,other.pos.y);
+
         if (other.r > this.r*1.3) {
             var d = p5.Vector.dist(this.pos, other.pos);
                 if (d < this.r/2 + other.r) {
