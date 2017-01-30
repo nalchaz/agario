@@ -11,12 +11,16 @@ function random(min, max) {
     return Math.random() * (max - min) + min;
 }
 
+function Pos(x,y){
+    this.x=x;
+    this.y=y;
+}
+
 function Blob(id, name, x, y, r, red, green, blue){
     this.id=id;
     this.name=name;
     this.r=r;
-    this.pos.x = x;
-    this.pos.y = y;
+    this.pos=new Pos(x,y);
     this.red=red;
     this.green=green;
     this.blue=blue;
