@@ -63,7 +63,7 @@ function Blob(name, x, y, r, red, green, blue) {
 
         fill(0);
         textAlign(CENTER);
-        textSize(Math.round(r));
+        textSize(Math.round(r/4));
         text(this.name, this.pos.x, this.pos.y+this.r+15);
 
     }

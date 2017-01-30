@@ -3,6 +3,7 @@
  */
 var socket;
 var mapsize=4000;
+var spawnzone=3800;
 var blob;
 var yourname="user";
 var blobs = [];
@@ -15,7 +16,7 @@ function setup() {
 
     socket = io();
 
-    blob = new Blob(yourname, random(-200,200), random(-200,200), 64, 255,255,255);
+    blob = new Blob(yourname, random(-spawnzone,spawnzone), random(-spawnzone,spawnzone), 64, 255,255,255);
 
     var data ={
         name: blob.name,
@@ -84,8 +85,8 @@ function draw() {
                 console.log(blobs);
             }
             if(blob.dead(blobs[i])){
-                blob.pos.x=random(-200,200);
-                blob.pos.y=random(-200,200);
+                blob.pos.x=random(-spawnzone,spawnzone);
+                blob.pos.y=random(-spawnzone,spawnzone);
                 blob.r=64;
                 messageDead="T'es mort comme une grosse merde mangé par ce fils de pute de "+blobs[i].name;
                 timingDead=200;
