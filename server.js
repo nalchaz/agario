@@ -84,8 +84,11 @@ io.sockets.on('connection',
                     red: red,
                     green: green,
                     blue: blue
+                };
+                if (io.sockets.connected[socket.id]) {
+                    io.sockets.connected[socket.id].emit('create', datacreate);
                 }
-                socket.emit('create', datacreate);
+
                 var blob = new Blob(socket.id, nom, data.x, data.y, data.r, red, green, blue);
                 blobs.push(blob);
             }
