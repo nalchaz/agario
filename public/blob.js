@@ -14,11 +14,11 @@ function Blob(name, x, y, r, red, green, blue) {
 
     this.update = function() {
         var newvel = createVector(mouseX-width/2, mouseY-height/2);
-        newvel.setMag(3);
+        newvel.setMag(8);
         this.vel.lerp(newvel, 0.2);
         this.pos.add(this.vel);
-        this.pos.x=constrain(this.pos.x, -width*4+this.r-50, width*4-this.r+50);
-        this.pos.y=constrain(this.pos.y, -height*4+this.r-50, height*4-this.r+50);
+        this.pos.x=constrain(this.pos.x, -mapsize+this.r-50, mapsize*4-this.r+50);
+        this.pos.y=constrain(this.pos.y, -mapsize*4+this.r-50, mapsize*4-this.r+50);
     }
 
     this.eats = function(other) {

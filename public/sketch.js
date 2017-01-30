@@ -2,10 +2,11 @@
  * Created by nahel on 30/01/2017.
  */
 var socket;
-
+var mapsize=4000;
 var blob;
 var yourname="user";
 var blobs = [];
+var blobsbot = [];
 var zoom = 1;
 
 function setup() {
@@ -13,7 +14,7 @@ function setup() {
 
     socket = io();
 
-    blob = new Blob(yourname, 0, 0, 64, 255,255,0);
+    blob = new Blob(yourname, 0, 0, 64, 255,255,255);
 
     var data ={
         name: blob.name,
@@ -26,11 +27,7 @@ function setup() {
     }
 
     socket.emit('start', data);
-    //for (var i = 0; i < nbblobs; i++) {
-    //    var x = random(-4*width,4*width);
-    //    var y = random(-4*height,4*height);
-    //    blobs[i] = new Blob(x, y, 16, random(20,200),random(20,200),random(20,200));
-    //}
+
 
     socket.on('create',
         function (data) {
@@ -45,6 +42,13 @@ function setup() {
         // When we receive data
         function(data) {
             blobs = data;
+        }
+    );
+
+    socket.on('bots',
+        // When we receive data
+        function(data) {
+            blobsbot = data;
         }
     );
 
@@ -65,13 +69,23 @@ function draw() {
             var displayBlob=new Blob(blobs[i].name, blobs[i].x, blobs[i].y, blobs[i].r, blobs[i].red, blobs[i].green, blobs[i].blue);
             displayBlob.show();
 
-
         }
 
         //if (blob.eats(blobs[i])) {
             //blobs.splice(i, 1);
         //}
     }
+    for (var i = blobsbot.length-1; i >=0; i--) {
+
+        var displayBlobBot=new Blob("", blobsbot[i].x, blobsbot[i].y, 16, blobsbot[i].red, blobsbot[i].green, blobsbot[i].blue);
+        displayBlobBot.show();
+        if (blob.eats(displayBlobBot)) {
+            blobsbot.splice(i, 1);
+            socket.emit('ate', i);
+        }
+    }
+
+
 
 
     blob.show();

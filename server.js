@@ -1,13 +1,28 @@
 var blobs =[];
+var blobsbot= [];
+var nbblobsbot=2000;
 var nom;
 var red=0;
 var green=0;
 var blue=0;
+var mapsize=4000;
+
+function random(min, max) {
+    return Math.random() * (max - min) + min;
+}
 
 function Blob(id, name, x, y, r, red, green, blue){
     this.id=id;
     this.name=name;
     this.r=r;
+    this.x = x;
+    this.y = y;
+    this.red=red;
+    this.green=green;
+    this.blue=blue;
+}
+
+function Blobbot(x, y, red, green, blue){
     this.x = x;
     this.y = y;
     this.red=red;
@@ -55,6 +70,11 @@ app.post('/agario.html', function(request, response) {
     response.sendFile('public/agario.html', { root: __dirname });
 });
 
+for (var i = 0; i < nbblobsbot; i++) {
+    var x = random(-mapsize,mapsize);
+    var y = random(-mapsize,mapsize);
+    blobsbot.push(new Blobbot(x, y, random(20,200),random(20,200),random(20,200)));
+}
 
 // WebSocket Portion
 // WebSockets work with the HTTP server
@@ -64,6 +84,11 @@ setInterval(heartbeat, 33);
 
 function heartbeat(){
     io.sockets.emit('heartbeat', blobs);
+}
+setInterval(heartbeatbots, 500);
+
+function heartbeatbots(){
+    io.sockets.emit('bots', blobsbot);
 }
 
 
@@ -115,6 +140,10 @@ io.sockets.on('connection',
 
             }
         );
+
+        socket.on('ate', function (i) {
+            blobsbot.splice(i,1);
+        });
 
         socket.on('disconnect', function() {
             for(var i = 0; i < blobs.length; i++) {
