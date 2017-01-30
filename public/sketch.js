@@ -11,6 +11,7 @@ var blobsbot = [];
 var zoom = 1;
 var timingDead=0;
 var messageDead="";
+
 function setup() {
     createCanvas(windowWidth, windowHeight);
 

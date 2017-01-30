@@ -55,25 +55,11 @@ app.get('/', function (request, response) {
 
 app.post('/agario.html', function(request, response) {
     nom=request.body.nom;
-    var couleur=request.body.couleur;
 
-    switch (couleur){
-        case "Rouge":
-            red=255;
-            green=0;
-            blue=0;
-            break;
-        case "Vert":
-            red=0;
-            green=255;
-            blue=0;
-            break;
-        case "Bleu":
-            red=0;
-            green=0;
-            blue=255;
-            break;
-    }
+    red=Number(request.body.rouge);
+    green=Number(request.body.vert);
+    blue=Number(request.body.bleu);
+
 
     response.sendFile('public/agario.html', { root: __dirname });
 });
