@@ -76,12 +76,10 @@ function draw() {
                 console.log(blobs);
             }
             if(blob.dead(blobs[i])){
-
-                alert("T'es mort comme une grosse merde mangé par ce fils de pute de "+blobs[i].name);
-
                 blob.pos.x=random(-200,200);
                 blob.pos.y=random(-200,200);
                 blob.r=64;
+                alert("T'es mort comme une grosse merde mangé par ce fils de pute de "+blobs[i].name);
             }
         }
     }

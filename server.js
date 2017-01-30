@@ -135,8 +135,7 @@ io.sockets.on('connection',
                     if(socket.id == blobs[i].id){
                         blob=blobs[i];
                         blob.name=data.name;
-                        blob.pos.x=data.x;
-                        blob.pos.y=data.y;
+                        blob.pos=new Pos(data.x,data.y);
                         blob.r=data.r;
                         blob.red=data.red;
                         blob.green=data.green;
