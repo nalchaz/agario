@@ -1,6 +1,6 @@
 var blobs =[];
 var blobsbot= [];
-var nbblobsbot=2000;
+var nbblobsbot=300;
 var nom;
 var red=0;
 var green=0;
@@ -85,7 +85,7 @@ setInterval(heartbeat, 33);
 function heartbeat(){
     io.sockets.emit('heartbeat', blobs);
 }
-setInterval(heartbeatbots, 500);
+setInterval(heartbeatbots, 80);
 
 function heartbeatbots(){
     io.sockets.emit('bots', blobsbot);
@@ -141,9 +141,25 @@ io.sockets.on('connection',
             }
         );
 
-        socket.on('ate', function (i) {
-            blobsbot.splice(i,1);
+        socket.on('ateplayer', function (blob) {
+            for(var i = 0; i < blobs.length; i++) {
+                if (blob == blobs[i]) {
+                    if (io.sockets.connected[blob.id]) {
+                        io.sockets.connected[blob.id].emit('eaten', "T'es mort grosse merde");
+                    }
+                }
+            }
         });
+
+
+        socket.on('atebot', function (i) {
+            blobsbot.splice(i,1);
+            var newx = random(-mapsize,mapsize);
+            var newy = random(-mapsize,mapsize);
+            blobsbot.push(new Blobbot(newx, newy, random(20,200),random(20,200),random(20,200)));
+        });
+
+
 
         socket.on('disconnect', function() {
             for(var i = 0; i < blobs.length; i++) {

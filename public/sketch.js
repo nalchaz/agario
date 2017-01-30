@@ -52,6 +52,19 @@ function setup() {
         }
     );
 
+    socket.on('eaten',
+        // When we receive data
+        function(data) {
+            fill(255,0,0);
+            textAlign(CENTER);
+            textSize(20);
+            text("T'es qu'une merde");
+            blob.x=0;
+            blob.y=0;
+            blob.r=64;
+        }
+    );
+
 }
 
 function draw() {
@@ -65,23 +78,23 @@ function draw() {
 
     for (var i = blobs.length-1; i >=0; i--) {
         var id=blobs[i].id;
-        if(id != socket.id){
-            var displayBlob=new Blob(blobs[i].name, blobs[i].x, blobs[i].y, blobs[i].r, blobs[i].red, blobs[i].green, blobs[i].blue);
+        if(id != socket.id) {
+            var displayBlob = new Blob(blobs[i].name, blobs[i].x, blobs[i].y, blobs[i].r, blobs[i].red, blobs[i].green, blobs[i].blue);
             displayBlob.show();
-
+            if (blob.eats(blobs[i])) {
+                blobs.splice(i, 1);
+                socket.emit('ateplayer', blobs[i]);
+            }
         }
-
-        //if (blob.eats(blobs[i])) {
-            //blobs.splice(i, 1);
-        //}
     }
     for (var i = blobsbot.length-1; i >=0; i--) {
 
         var displayBlobBot=new Blob("", blobsbot[i].x, blobsbot[i].y, 16, blobsbot[i].red, blobsbot[i].green, blobsbot[i].blue);
         displayBlobBot.show();
         if (blob.eats(displayBlobBot)) {
+            socket.emit('atebot', i);
             blobsbot.splice(i, 1);
-            socket.emit('ate', i);
+
         }
     }
 

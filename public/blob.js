@@ -10,25 +10,30 @@ function Blob(name, x, y, r, red, green, blue) {
     this.red=red;
     this.green=green;
     this.blue=blue;
-
+    this.vitesse=Math.round(16-Math.round(this.r/120));
 
     this.update = function() {
         var newvel = createVector(mouseX-width/2, mouseY-height/2);
-        newvel.setMag(8);
+        newvel.setMag(this.vitesse);
         this.vel.lerp(newvel, 0.2);
         this.pos.add(this.vel);
-        this.pos.x=constrain(this.pos.x, -mapsize+this.r-50, mapsize*4-this.r+50);
-        this.pos.y=constrain(this.pos.y, -mapsize*4+this.r-50, mapsize*4-this.r+50);
+        this.pos.x=constrain(this.pos.x, -mapsize+this.r-50, mapsize-this.r+50);
+        this.pos.y=constrain(this.pos.y, -mapsize+this.r-50, mapsize-this.r+50);
     }
 
     this.eats = function(other) {
-        var d = p5.Vector.dist(this.pos, other.pos);
-        if (d < this.r + other.r) {
-            var sum = PI * this.r * this.r + PI * other.r * other.r;
-            this.r = sqrt(sum / PI);
-            //this.r += other.r;
-            return true;
-        } else {
+
+            if (this.r > other.r * 1.3) {
+                var d = p5.Vector.dist(this.pos, other.pos);
+                if (d < this.r + other.r/2) {
+                    var sum = PI * this.r * this.r + PI * other.r * other.r;
+                    this.r = sqrt(sum / PI);
+                    this.vitesse = Math.round(16 - Math.round(this.r / 120));
+                    return true;
+                }
+            }
+
+        else {
             return false;
         }
     }
@@ -39,7 +44,7 @@ function Blob(name, x, y, r, red, green, blue) {
 
         fill(0);
         textAlign(CENTER);
-        textSize(12);
+        textSize(r/4);
         text(this.name, this.pos.x, this.pos.y+this.r+15);
 
     }
