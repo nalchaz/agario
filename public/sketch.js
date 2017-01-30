@@ -8,7 +8,8 @@ var yourname="user";
 var blobs = [];
 var blobsbot = [];
 var zoom = 1;
-
+var timingDead=0;
+var messageDead="";
 function setup() {
     createCanvas(windowWidth, windowHeight);
 
@@ -59,11 +60,18 @@ function draw() {
     background(255);
 
     translate(width/2, height/2);
-    var newzoom = 64 / blob.r;
+    var newzoom = 48 / blob.r;
     zoom = lerp(zoom, newzoom, 0.1);
     scale(zoom);
     translate(-blob.pos.x, -blob.pos.y);
 
+    if(timingDead>0){
+        fill(0);
+        textAlign(CENTER);
+        textSize(40);
+        text(messageDead, blob.pos.x, blob.pos.y-100);
+        timingDead--;
+    }
     for (var i = blobs.length-1; i >=0; i--) {
         var id=blobs[i].id;
         if(id != socket.id) {
@@ -79,7 +87,8 @@ function draw() {
                 blob.pos.x=random(-200,200);
                 blob.pos.y=random(-200,200);
                 blob.r=64;
-                alert("T'es mort comme une grosse merde mangé par ce fils de pute de "+blobs[i].name);
+                messageDead="T'es mort comme une grosse merde mangé par ce fils de pute de "+blobs[i].name;
+                timingDead=200;
             }
         }
     }
