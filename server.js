@@ -1,11 +1,11 @@
 var blobs =[];
 var blobsbot= [];
-var nbblobsbot=300;
+var nbblobsbot=700;
 var nom;
 var red=0;
 var green=0;
 var blue=0;
-var mapsize=4000;
+var mapsize=8000;
 
 function random(min, max) {
     return Math.random() * (max - min) + min;
@@ -55,7 +55,9 @@ app.get('/', function (request, response) {
 
 app.post('/agario.html', function(request, response) {
     nom=request.body.nom;
-
+    if(nom==""){
+        nom="merdesanspseudo";
+    }
     red=Number(request.body.rouge);
     green=Number(request.body.vert);
     blue=Number(request.body.bleu);
@@ -74,7 +76,7 @@ for (var i = 0; i < nbblobsbot; i++) {
 // WebSockets work with the HTTP server
 var io = require('socket.io')(server);
 
-setInterval(heartbeat, 33);
+setInterval(heartbeat, 5);
 
 function heartbeat(){
     io.sockets.emit('heartbeat', blobs);

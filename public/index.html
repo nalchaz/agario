@@ -8,13 +8,13 @@
         <br/>
         Niveau rouge :
         <select class="couleurs" name="rouge"></select>
-        Niveau bleu :
+        Niveau vert :
         <select class="couleurs" name="vert"></select>
         Niveau bleu :
         <select class="couleurs" name="bleu"></select>
         <script>
             var html='';
-            for(var i=0; i<241; i++){
+            for(var i=0; i<251; i++){
                 html=html+'<option value="'+i+'">'+i+'</option>';
             }
             document.getElementsByClassName("couleurs")[0].innerHTML =html;

@@ -2,8 +2,8 @@
  * Created by nahel on 30/01/2017.
  */
 var socket;
-var mapsize=4000;
-var spawnzone=3800;
+var mapsize=8000;
+var spawnzone=7800;
 var blob;
 var yourname="user";
 var blobs = [];
@@ -62,7 +62,7 @@ function draw() {
     background(255);
 
     translate(width/2, height/2);
-    var newzoom = 48 / blob.r;
+    var newzoom = 54 / blob.r;
     zoom = lerp(zoom, newzoom, 0.1);
     scale(zoom);
     translate(-blob.pos.x, -blob.pos.y);
