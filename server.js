@@ -15,8 +15,8 @@ function Blob(id, name, x, y, r, red, green, blue){
     this.id=id;
     this.name=name;
     this.r=r;
-    this.x = x;
-    this.y = y;
+    this.pos.x = x;
+    this.pos.y = y;
     this.red=red;
     this.green=green;
     this.blue=blue;
@@ -44,6 +44,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(express.static('public'));
+
+app.get('/', function (request, response) {
+    response.sendFile('public/index.html', { root: __dirname });
+});
 
 app.post('/agario.html', function(request, response) {
     nom=request.body.nom;
@@ -127,8 +131,8 @@ io.sockets.on('connection',
                     if(socket.id == blobs[i].id){
                         blob=blobs[i];
                         blob.name=data.name;
-                        blob.x=data.x;
-                        blob.y=data.y;
+                        blob.pos.x=data.x;
+                        blob.pos.y=data.y;
                         blob.r=data.r;
                         blob.red=data.red;
                         blob.green=data.green;
@@ -141,15 +145,6 @@ io.sockets.on('connection',
             }
         );
 
-        socket.on('ateplayer', function (blob) {
-            for(var i = 0; i < blobs.length; i++) {
-                if (blob == blobs[i]) {
-                    if (io.sockets.connected[blob.id]) {
-                        io.sockets.connected[blob.id].emit('eaten', "T'es mort grosse merde");
-                    }
-                }
-            }
-        });
 
 
         socket.on('atebot', function (i) {

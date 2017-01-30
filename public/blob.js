@@ -22,8 +22,11 @@ function Blob(name, x, y, r, red, green, blue) {
     }
 
     this.eats = function(other) {
+            if(other.pos == undefined){
+                other.pos=createVector(other.x,other.y);
+            }
+            if (this.r > other.r*1.3) {
 
-            if (this.r > other.r * 1.3) {
                 var d = p5.Vector.dist(this.pos, other.pos);
                 if (d < this.r + other.r/2) {
                     var sum = PI * this.r * this.r + PI * other.r * other.r;
@@ -34,6 +37,21 @@ function Blob(name, x, y, r, red, green, blue) {
             }
 
         else {
+            return false;
+        }
+    }
+
+    this.dead=function (other) {
+        if(other.pos == undefined){
+            other.pos=createVector(other.x,other.y);
+        }
+        if (other.r > this.r*1.3) {
+            var d = p5.Vector.dist(this.pos, other.pos);
+                if (d < this.r/2 + other.r) {
+                    return true;
+                }
+        }
+        else{
             return false;
         }
     }

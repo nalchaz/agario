@@ -14,7 +14,7 @@ function setup() {
 
     socket = io();
 
-    blob = new Blob(yourname, 0, 0, 64, 255,255,255);
+    blob = new Blob(yourname, random(-200,200), random(-200,200), 64, 255,255,255);
 
     var data ={
         name: blob.name,
@@ -52,18 +52,6 @@ function setup() {
         }
     );
 
-    socket.on('eaten',
-        // When we receive data
-        function(data) {
-            fill(255,0,0);
-            textAlign(CENTER);
-            textSize(20);
-            text("T'es qu'une merde");
-            blob.x=0;
-            blob.y=0;
-            blob.r=64;
-        }
-    );
 
 }
 
@@ -83,7 +71,17 @@ function draw() {
             displayBlob.show();
             if (blob.eats(blobs[i])) {
                 blobs.splice(i, 1);
-                socket.emit('ateplayer', blobs[i]);
+            }
+            if(blobs[i]==undefined){
+                console.log(blobs);
+            }
+            if(blob.dead(blobs[i])){
+
+                alert("T'es mort comme une grosse merde mangé par ce fils de pute de "+blobs[i].name);
+
+                blob.pos.x=random(-200,200);
+                blob.pos.y=random(-200,200);
+                blob.r=64;
             }
         }
     }
@@ -94,7 +92,6 @@ function draw() {
         if (blob.eats(displayBlobBot)) {
             socket.emit('atebot', i);
             blobsbot.splice(i, 1);
-
         }
     }
 
