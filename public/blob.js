@@ -43,6 +43,7 @@ function Blob(name, x, y, r, red, green, blue) {
 
     this.dead=function (other) {
 
+        if(other==undefined) return false;
         other.pos=createVector(other.pos.x,other.pos.y);
 
         if (other.r > this.r*1.3) {

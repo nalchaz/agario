@@ -67,7 +67,7 @@ function draw() {
     for (var i = blobs.length-1; i >=0; i--) {
         var id=blobs[i].id;
         if(id != socket.id) {
-            var displayBlob = new Blob(blobs[i].name, blobs[i].x, blobs[i].y, blobs[i].r, blobs[i].red, blobs[i].green, blobs[i].blue);
+            var displayBlob = new Blob(blobs[i].name, blobs[i].pos.x, blobs[i].pos.y, blobs[i].r, blobs[i].red, blobs[i].green, blobs[i].blue);
             displayBlob.show();
             if (blob.eats(blobs[i])) {
                 blobs.splice(i, 1);
