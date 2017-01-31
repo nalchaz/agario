@@ -1,6 +1,42 @@
+var express = require('express');
+var path = require('path');
+
+// Create the app
+var app = express();
+
+// Set up the server
+
+var server = app.listen(process.env.PORT || 2000);
+var bodyParser = require('body-parser');
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+
+app.use(express.static('public'));
+
+app.get('/', function (request, response) {
+    response.sendFile('public/index.html', { root: __dirname });
+});
+
+app.post('/agario.html', function(request, response) {
+    nom=request.body.nom;
+    if(nom==""){
+        nom="merdesanspseudo";
+    }
+    red=Number(request.body.rouge);
+    green=Number(request.body.vert);
+    blue=Number(request.body.bleu);
+
+
+    response.sendFile('public/agario.html', { root: __dirname });
+});
+
+
 var blobs =[];
 var blobsbot= [];
+var deadblobsbot= [];
+
 var nbblobsbot=700;
+var nbdeadblob=10;
 var nom;
 var red=0;
 var green=0;
@@ -34,49 +70,31 @@ function Blobbot(x, y, red, green, blue){
     this.blue=blue;
 }
 
-var express = require('express');
-var path = require('path');
+function DeadBlobbot(x, y){
+    this.x = x;
+    this.y = y;
+}
 
-// Create the app
-var app = express();
-
-// Set up the server
-
-var server = app.listen(process.env.PORT || 2000);
-var bodyParser = require('body-parser');
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-
-app.use(express.static('public'));
-
-app.get('/', function (request, response) {
-    response.sendFile('public/index.html', { root: __dirname });
-});
-
-app.post('/agario.html', function(request, response) {
-    nom=request.body.nom;
-    if(nom==""){
-        nom="merdesanspseudo";
-    }
-    red=Number(request.body.rouge);
-    green=Number(request.body.vert);
-    blue=Number(request.body.bleu);
-
-
-    response.sendFile('public/agario.html', { root: __dirname });
-});
-
+// CREATION DES BOTS
 for (var i = 0; i < nbblobsbot; i++) {
     var x = random(-mapsize,mapsize);
     var y = random(-mapsize,mapsize);
     blobsbot.push(new Blobbot(x, y, random(20,200),random(20,200),random(20,200)));
 }
 
+// CREATION DES DEADBOTS
+
+for (var i = 0; i < nbdeadblob; i++) {
+    var x = random(-mapsize,mapsize);
+    var y = random(-mapsize,mapsize);
+    deadblobsbot.push(new DeadBlobbot(x, y));
+}
+
 // WebSocket Portion
 // WebSockets work with the HTTP server
 var io = require('socket.io')(server);
 
-setInterval(heartbeat, 5);
+setInterval(heartbeat, 10);
 
 function heartbeat(){
     io.sockets.emit('heartbeat', blobs);
@@ -85,6 +103,7 @@ setInterval(heartbeatbots, 80);
 
 function heartbeatbots(){
     io.sockets.emit('bots', blobsbot);
+    io.sockets.emit('deadbots', deadblobsbot);
 }
 
 
@@ -145,6 +164,12 @@ io.sockets.on('connection',
             blobsbot.push(new Blobbot(newx, newy, random(20,200),random(20,200),random(20,200)));
         });
 
+        socket.on('atedeadbot', function (i) {
+            deadblobsbot.splice(i,1);
+            var newx = random(-mapsize,mapsize);
+            var newy = random(-mapsize,mapsize);
+            deadblobsbot.push(new DeadBlobbot(newx, newy));
+        });
 
 
         socket.on('disconnect', function() {

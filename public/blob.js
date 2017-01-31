@@ -35,7 +35,6 @@ function Blob(name, x, y, r, red, green, blue) {
                     return true;
                 }
             }
-
         else {
             return false;
         }

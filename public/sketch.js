@@ -2,12 +2,16 @@
  * Created by nahel on 30/01/2017.
  */
 var socket;
+
 var mapsize=8000;
 var spawnzone=7800;
-var blob;
 var yourname="user";
+
+var blob;
 var blobs = [];
 var blobsbot = [];
+var deadBlobsbot = [];
+
 var zoom = 1;
 var timingDead=0;
 var messageDead="";
@@ -55,6 +59,13 @@ function setup() {
         }
     );
 
+    socket.on('deadbots',
+        // When we receive data
+        function(data) {
+            deadBlobsbot = data;
+        }
+    );
+
 
 }
 
@@ -74,6 +85,8 @@ function draw() {
         text(messageDead, blob.pos.x, blob.pos.y-100);
         timingDead--;
     }
+
+    //AUTRES JOUEURS
     for (var i = blobs.length-1; i >=0; i--) {
         var id=blobs[i].id;
         if(id != socket.id) {
@@ -94,6 +107,8 @@ function draw() {
             }
         }
     }
+
+    //BLOB BOTS
     for (var i = blobsbot.length-1; i >=0; i--) {
 
         var displayBlobBot=new Blob("", blobsbot[i].x, blobsbot[i].y, 16, blobsbot[i].red, blobsbot[i].green, blobsbot[i].blue);
@@ -104,7 +119,18 @@ function draw() {
         }
     }
 
+    //DEADBLOB BOTS
+    for (var i = deadBlobsbot.length-1; i >=0; i--) {
 
+        var deadBlobBot=new Blob("DEADBLOB", deadBlobsbot[i].x, deadBlobsbot[i].y, 160, 0, 230, 0);
+        deadBlobBot.show();
+
+        if (blob.eats(deadBlobBot)) {
+            socket.emit('atedeadbot', i);
+            deadBlobsbot.splice(i, 1);
+            blob.r=blob.r/2;
+        }
+    }
 
 
     blob.show();
