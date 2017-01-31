@@ -41,7 +41,7 @@ var nom;
 var red=0;
 var green=0;
 var blue=0;
-var mapsize=8000;
+var mapsize=22000;
 
 function random(min, max) {
     return Math.random() * (max - min) + min;

@@ -3,7 +3,7 @@
  */
 var socket;
 
-var mapsize=8000;
+var mapsize=220000;
 var spawnzone=7800;
 var yourname="user";
 

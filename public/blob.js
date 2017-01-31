@@ -10,7 +10,7 @@ function Blob(name, x, y, r, red, green, blue) {
     this.red=red;
     this.green=green;
     this.blue=blue;
-    this.vitesse=Math.round(16-Math.round(this.r/120));
+    this.vitesse=Math.round(16-Math.round(this.r/220));
 
     this.update = function() {
         var newvel = createVector(mouseX-width/2, mouseY-height/2);
@@ -31,7 +31,7 @@ function Blob(name, x, y, r, red, green, blue) {
                 if (d < this.r + other.r/2) {
                     var sum = PI * this.r * this.r + PI * other.r * other.r;
                     this.r = sqrt(sum / PI);
-                    this.vitesse = Math.round(16 - Math.round(this.r / 120));
+                    this.vitesse = Math.round(16 - Math.round(this.r / 220));
                     return true;
                 }
             }
